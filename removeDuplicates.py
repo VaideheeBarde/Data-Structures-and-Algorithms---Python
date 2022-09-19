@@ -1,56 +1,22 @@
-class Node:
-    def __init__(self, data=0, next=None):
-        self.data = data
-        self.next = next
+class Name:
+    def __init__(self, first_name, last_name):
+        self.first_name, self.last_name = first_name, last_name
 
-class LinkedList:
-    def __init__(self, head=None):
-        self.head = None
+    def __eq__(self, other):
+        return self.first_name == other.first_name
 
-    def append_node(self, new_data):
-        new_node = Node(new_data)
+    def __lt__(self, other):
+        return (self.first_name < other.first_name if self.first_name != other.first_name else self.last_name<other.last_name)
 
-        if self.head is None:
-            self.head = new_node
-            return
+def eliminate_duplicate(A):
+    A.sort()
+    write_idx = 1
+    for cand in A[1:]:
+        if cand[0] != A[write_idx -1][0]:
+            A[write_idx] = cand
+            write_idx += 1
+    del A[write_idx:]
+    return A
 
-        last = self.head
-        while last.next:
-            last = last.next
-
-        last.next = new_node
-
-    def print_list(self):
-        temp = self.head
-
-        while temp:
-            print(temp.data)
-            temp = temp.next
-
-def remove_duplicates(L):
-    it = L
-
-    while it:
-        #Uses next_distinct to find the next distinct value
-        next_distinct = it.next
-
-        while next_distinct and next_distinct.data == it.data:
-            next_distinct = next_distinct.next
-
-        it.next = next_distinct
-        it = next_distinct
-
-    return L
-
-if __name__ == "__main__":
-    L = LinkedList()
-    L.append_node(1)
-    L.append_node(2)
-    L.append_node(2)
-    L.append_node(3)
-    L.append_node(4)
-    L.append_node(4)
-
-    test = LinkedList()
-    test.head = remove_duplicates(L.head)
-    test.print_list()
+A = [("Ian", "Botham"), ("David", "Gower"), ("Ian", "Bell"), ("Ian", "Chapell")]
+print(eliminate_duplicate(A))
